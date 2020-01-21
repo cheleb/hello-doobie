@@ -2,6 +2,12 @@
 
 Welcome to hello-doobie!
 
+## Inspired by
+
+* Article on [transaction](https://blog.softwaremill.com/from-transactional-to-type-safe-reasonable-transactions-a5019906245e)
+
+* Article on [testing](https://blog.softwaremill.com/testing-doobie-programs-425517c1c295)
+
 ## Contribution policy ##
 
 Contributions via GitHub pull requests are gladly accepted from their original author. Along with

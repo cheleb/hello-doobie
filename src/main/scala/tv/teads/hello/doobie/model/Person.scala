@@ -19,20 +19,8 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tv.teads.hello.doobie
+package tv.teads.hello.doobie.model
 
-import doobie._
-import doobie.implicits._
-import cats._
-import cats.effect._
-import cats.implicits._
+import java.{ util => ju }
 
-import scala.concurrent.ExecutionContext
-
-trait DBConnection {
-
-  implicit val contextShift = IO.contextShift(ExecutionContext.global)
-
-  val xa = Transactor.fromDriverManager[IO]("org.postgresql.Driver", "jdbc:postgresql:world")
-
-}
+case class Person(id: ju.UUID, name: String, age: Int)

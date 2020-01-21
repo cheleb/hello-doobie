@@ -21,18 +21,42 @@
 
 package tv.teads.hello.doobie
 
+import org.scalatest.wordspec.AnyWordSpec
+
 import doobie._
 import doobie.implicits._
-import cats._
-import cats.effect._
-import cats.implicits._
 
-import scala.concurrent.ExecutionContext
+import doobie.postgres._
+import doobie.postgres.implicits._
 
-trait DBConnection {
+import doobie.util.transactor
+import tv.teads.hello.doobie.model.Person
+import java.{ util => ju }
 
-  implicit val contextShift = IO.contextShift(ExecutionContext.global)
+class SelectSpec extends AnyWordSpec with DBConnection {
 
-  val xa = Transactor.fromDriverManager[IO]("org.postgresql.Driver", "jdbc:postgresql:world")
+  "Doobie" should {
+    "select person" in {
+      val all = sql"select p.id, p.name, p.age from person p"
+        .query[Person]
+        .to[List]
+        .transact(xa)
+        .unsafeRunSync()
+
+      all foreach println
+    }
+    "Combine statement" in {
+      def insertPerson(p: Person): ConnectionIO[Int] =
+        sql"INSERT INTO person (id, name, age) VALUES(${p.id}, ${p.name}, ${p.age})".update.run
+
+      def countPerson(): ConnectionIO[Int] =
+        sql"SELECT count(*) FROM person".query[Int].unique
+
+      val insertAndCount =
+        insertPerson(Person(ju.UUID.randomUUID(), "Olivier", 48))
+          .flatMap(_ => countPerson)
+
+    }
+  }
 
 }
