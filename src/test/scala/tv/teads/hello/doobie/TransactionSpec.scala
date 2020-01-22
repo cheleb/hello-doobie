@@ -32,18 +32,45 @@ import doobie.postgres.implicits._
 import doobie.util.transactor
 import tv.teads.hello.doobie.model.Person
 import java.{ util => ju }
+import cats.effect.IO
 
-class SelectSpec extends AnyWordSpec with DBConnection {
+class TransactionSpec extends AnyWordSpec with DBConnection {
 
   "Doobie" should {
-    "select person" in {
-      val all = sql"select p.id, p.name, p.age from person p"
-        .query[Person]
-        .to[List]
-        .transact(xa)
-        .unsafeRunSync()
 
-      all foreach println
+    def insertPerson(p: Person): ConnectionIO[Int] =
+      sql"INSERT INTO person (id, name, age) VALUES(${p.id}, ${p.name}, ${p.age})".update.run
+
+    "Combine statement" in {
+
+      def countPerson(): ConnectionIO[Int] =
+        sql"SELECT count(*) FROM person".query[Int].unique
+
+      val insertAndCount =
+        insertPerson(Person(ju.UUID.randomUUID(), "Olivier", 48))
+          .flatMap(_ => countPerson)
+          .transact(xa)
+          .unsafeRunSync()
+
+      println(s"$insertAndCount person in db.")
+    }
+
+    "Combine with IO" in {
+
+      val sendEmail = IO(println("Email sent."))
+
+      val insertLucasInTx = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", 18)).transact(xa)
+      // sendEmail; Begin; Insert; Commit
+      sendEmail.flatMap(_ => insertLucasInTx).unsafeRunSync()
+
+      val sendEmailInTx = sendEmail.to[ConnectionIO]
+
+      // sendEmail; Begin; Insert; Commit
+      sendEmail.flatMap(_ => insertLucasInTx)
+
+      // Begin; Insert; Commit; sendEmail;
+      insertLucasInTx.flatMap(_ => sendEmail)
+
     }
   }
 

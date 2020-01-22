@@ -22,7 +22,7 @@
 package tv.teads.hello
 
 package object doobie {
-  type Iterable[+A]    = scala.collection.immutable.Iterable[A]
-  type Seq[+A]         = scala.collection.immutable.Seq[A]
-  type IndexedSeq[+A]  = scala.collection.immutable.IndexedSeq[A]
+  type Iterable[+A]   = scala.collection.immutable.Iterable[A]
+  type Seq[+A]        = scala.collection.immutable.Seq[A]
+  type IndexedSeq[+A] = scala.collection.immutable.IndexedSeq[A]
 }
