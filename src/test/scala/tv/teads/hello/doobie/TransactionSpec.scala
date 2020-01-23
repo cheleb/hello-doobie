@@ -59,19 +59,26 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
 
       val sendEmail = IO(println("Email sent."))
 
-      val insertLucasInTx = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", 18)).transact(xa)
+      val sendEmailWithConnection = sendEmail.to[ConnectionIO]
+
+      val insertLucas = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", 18))
+
+      val insertLucasInTx = insertLucas
+        .transact(xa)
       // sendEmail; Begin; Insert; Commit
       sendEmail.flatMap(_ => insertLucasInTx).unsafeRunSync()
 
-      val sendEmailInTx = sendEmail.to[ConnectionIO]
+      // Begin; sendEmail; Insert; Commit
+      sendEmail.flatMap(_ => insertLucasInTx).unsafeRunSync()
 
-      // sendEmail; Begin; Insert; Commit
-      sendEmail.flatMap(_ => insertLucasInTx)
+      // Begin; Insert; sendEmail; Commit
+      insertLucas.flatMap(_ => sendEmailWithConnection).transact(xa).unsafeRunSync
 
       // Begin; Insert; Commit; sendEmail;
-      insertLucasInTx.flatMap(_ => sendEmail)
+      insertLucasInTx.flatMap(_ => sendEmail).unsafeRunSync()
 
     }
+
   }
 
 }
