@@ -49,6 +49,12 @@ CREATE TABLE IF NOT EXISTS person (
 
 INSERT INTO person (id, name, age) VALUES ('9508c83f-0052-48f1-8bec-8ebc4b18c863', 'Agnes', 42);
 
+
+CREATE TABLE IF NOT EXISTS user_points (
+    id UUID PRIMARY KEY,
+    point INTEGER NOT NULL
+);
+
 -- COPY city (id, name, countrycode, district, population) FROM stdin;
 INSERT INTO city VALUES (1, 'Kabul', 'AFG', 'Kabol', 1780000);
 INSERT INTO city VALUES (2, 'Qandahar', 'AFG', 'Qandahar', 237500);

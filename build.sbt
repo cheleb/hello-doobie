@@ -13,7 +13,8 @@ lazy val `hello-doobie` =
     .settings(
       libraryDependencies ++= Seq(
         library.scalaCheck % Test,
-        library.scalaTest  % Test
+        library.scalaTest  % Test,
+        library.pgEmbedded % Test
       )
     )
 
@@ -26,9 +27,11 @@ lazy val library =
     object Version {
       val scalaCheck = "1.14.3"
       val scalaTest      = "3.1.0"
+      val pgEmbedded = "0.13.3"
     }
     val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
     val scalaTest      = "org.scalatest"    %% "scalatest"      % Version.scalaTest
+    val pgEmbedded = "com.opentable.components" % "otj-pg-embedded" % Version.pgEmbedded,
   }
 
 // *****************************************************************************
