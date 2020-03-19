@@ -26,7 +26,7 @@ lazy val library =
   new {
     object Version {
       val scalaCheck = "1.14.3"
-      val scalaTest      = "3.1.0"
+      val scalaTest      = "3.1.1"
       val pgEmbedded = "0.13.3"
     }
     val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
