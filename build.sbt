@@ -2,7 +2,7 @@
 // Projects
 // *****************************************************************************
 
-scalafixDependencies in ThisBuild += "org.scalatest" %% "autofix" % "3.1.0.0" 
+//scalafixDependencies in ThisBuild += "org.scalatest" %% "autofix" % "3.1.0.0" 
 
 lazy val `hello-doobie` =
   project
