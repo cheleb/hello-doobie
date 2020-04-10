@@ -26,10 +26,8 @@ import org.scalatest.wordspec.AnyWordSpec
 import doobie._
 import doobie.implicits._
 
-import doobie.postgres._
 import doobie.postgres.implicits._
 
-import doobie.util.transactor
 import tv.teads.hello.doobie.model.Person
 import java.{ util => ju }
 import cats.effect.IO

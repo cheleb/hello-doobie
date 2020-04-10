@@ -21,14 +21,7 @@
 
 package tv.teads.hello.doobie
 
-import cats.implicits._
-
-import doobie._
 import doobie.implicits._
-import cats.effect.Blocker
-import cats.effect.IO
-import java.util.concurrent.Executors
-import cats.effect.ExitCode
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 

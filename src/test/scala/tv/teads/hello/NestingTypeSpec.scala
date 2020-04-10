@@ -26,7 +26,6 @@ import cats.effect.IO
 
 import doobie._
 import doobie.implicits._
-import doobie.postgres._
 import doobie.postgres.implicits._
 
 import tv.teads.hello.doobie.model.Person

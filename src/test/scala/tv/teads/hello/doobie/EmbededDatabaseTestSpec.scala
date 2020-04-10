@@ -24,7 +24,6 @@ package tv.teads.hello.doobie
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.BeforeAndAfterAll
-import doobie.postgres.free.Embedded
 import com.opentable.db.postgres.embedded.EmbeddedPostgres
 import doobie.util.transactor.Transactor
 import scala.concurrent.ExecutionContext

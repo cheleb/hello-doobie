@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 object Dependencies {
-  val doobieVersion = "0.8.8"
+  val doobieVersion = "0.9.0"
   val doobie = Seq(
     libraryDependencies ++= Seq(
       // Start with this one

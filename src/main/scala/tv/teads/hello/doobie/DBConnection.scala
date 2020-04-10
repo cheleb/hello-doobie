@@ -22,10 +22,7 @@
 package tv.teads.hello.doobie
 
 import doobie._
-import doobie.implicits._
-import cats._
 import cats.effect._
-import cats.implicits._
 
 import scala.concurrent.ExecutionContext
 
