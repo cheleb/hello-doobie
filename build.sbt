@@ -44,7 +44,7 @@ lazy val settings =
   scalafixSettings
 
 lazy val scalafixSettings = Seq(
-  addCompilerPlugin(scalafixSemanticdb)
+  //addCompilerPlugin(scalafixSemanticdb)
 )
 
 lazy val commonSettings =
