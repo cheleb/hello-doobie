@@ -36,7 +36,7 @@ class SelectSpec extends AnyWordSpec with DBConnection {
       val all = sql"select p.id, p.name, p.age from person p"
         .query[Person]
         .to[List]
-        .transact(xa)
+        .transact(pgsqlXa)
         .unsafeRunSync()
 
       all foreach println

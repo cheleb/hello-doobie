@@ -39,7 +39,7 @@ class StreamingDoobieSpec extends AnyWordSpec with Matchers with DBConnection {
         }
         .compile
         .drain
-        .transact(xa)
+        .transact(pgsqlXa)
         .unsafeRunSync()
     }
   }

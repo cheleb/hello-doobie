@@ -11,6 +11,9 @@ lazy val `hello-doobie` =
     .settings(settings)
     .settings(Dependencies.doobie)
     .settings(
+      libraryDependencies += library.calciteDruid
+    )
+    .settings(
       libraryDependencies ++= Seq(
         library.scalaCheck % Test,
         library.scalaTest  % Test,
@@ -26,9 +29,10 @@ lazy val library =
   new {
     object Version {
       val scalaCheck = "1.14.3"
-      val scalaTest      = "3.1.1"
+      val scalaTest      = "3.2.0"
       val pgEmbedded = "0.13.3"
     }
+    val calciteDruid =  "org.apache.calcite" % "calcite-druid" % "1.23.0"
     val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
     val scalaTest      = "org.scalatest"    %% "scalatest"      % Version.scalaTest
     val pgEmbedded = "com.opentable.components" % "otj-pg-embedded" % Version.pgEmbedded,
@@ -49,7 +53,7 @@ lazy val scalafixSettings = Seq(
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.13.1",
+    scalaVersion := "2.13.3",
     organization := "tv.teads",
     organizationName := "Olivier NOUGUIER",
     startYear := Some(2018),

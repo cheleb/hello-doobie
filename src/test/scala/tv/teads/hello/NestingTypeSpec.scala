@@ -39,7 +39,7 @@ class NestingTypeSpec extends AnyWordSpec with DBConnection {
         sql"SELECT p.id, p.name, p.age FROM person p WHERE p.name = $name".query[Person].to[List]
       }
 
-      val persons = sqlQueryFromHttpCall.flatMap(_.transact(xa)).unsafeRunSync()
+      val persons = sqlQueryFromHttpCall.flatMap(_.transact(pgsqlXa)).unsafeRunSync()
       println(persons)
 
     }

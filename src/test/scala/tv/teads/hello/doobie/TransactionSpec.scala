@@ -47,7 +47,7 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
       val insertAndCount =
         insertPerson(Person(ju.UUID.randomUUID(), "Olivier", 48))
           .flatMap(_ => countPerson)
-          .transact(xa)
+          .transact(pgsqlXa)
           .unsafeRunSync()
 
       println(s"$insertAndCount person in db.")
@@ -62,7 +62,7 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
       val insertLucas = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", 18))
 
       val insertLucasInTx = insertLucas
-        .transact(xa)
+        .transact(pgsqlXa)
       // sendEmail; Begin; Insert; Commit
       sendEmail.flatMap(_ => insertLucasInTx).unsafeRunSync()
 
@@ -70,7 +70,7 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
       sendEmail.flatMap(_ => insertLucasInTx).unsafeRunSync()
 
       // Begin; Insert; sendEmail; Commit
-      insertLucas.flatMap(_ => sendEmailWithConnection).transact(xa).unsafeRunSync
+      insertLucas.flatMap(_ => sendEmailWithConnection).transact(pgsqlXa).unsafeRunSync
 
       // Begin; Insert; Commit; sendEmail;
       insertLucasInTx.flatMap(_ => sendEmail).unsafeRunSync()
