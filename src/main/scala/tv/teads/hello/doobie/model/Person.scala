@@ -23,4 +23,6 @@ package tv.teads.hello.doobie.model
 
 import java.{ util => ju }
 
-case class Person(id: ju.UUID, name: String, age: Int)
+import java.time.LocalDateTime
+
+case class Person(id: ju.UUID, name: String, birthDate: LocalDateTime)

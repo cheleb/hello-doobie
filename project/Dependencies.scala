@@ -2,7 +2,8 @@ import sbt._
 import Keys._
 
 object Dependencies {
-  val doobieVersion = "0.9.0"
+  val doobieVersion = "0.9.2"
+   val logbackVersion = "1.2.3"
   val doobie = Seq(
     libraryDependencies ++= Seq(
       // Start with this one
@@ -14,4 +15,9 @@ object Dependencies {
       "org.tpolecat" %% "doobie-scalatest" % doobieVersion % "test"  // ScalaTest support for typechecking statements.
     )
   )
+  val logging = Seq(
+      libraryDependencies ++= Seq(
+        "ch.qos.logback"        % "logback-classic" % logbackVersion
+      )
+    )
 }

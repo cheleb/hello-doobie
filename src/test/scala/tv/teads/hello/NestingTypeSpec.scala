@@ -26,6 +26,7 @@ import cats.effect.IO
 
 import doobie._
 import doobie.implicits._
+import doobie.implicits.javatime._
 import doobie.postgres.implicits._
 
 import tv.teads.hello.doobie.model.Person
@@ -36,7 +37,9 @@ class NestingTypeSpec extends AnyWordSpec with DBConnection {
       val httpCall = IO("Olivier")
 
       val sqlQueryFromHttpCall: IO[ConnectionIO[List[Person]]] = httpCall.map { name =>
-        sql"SELECT p.id, p.name, p.age FROM person p WHERE p.name = $name".query[Person].to[List]
+        sql"SELECT p.id, p.name, p.birthdate FROM person p WHERE p.name = $name"
+          .query[Person]
+          .to[List]
       }
 
       val persons = sqlQueryFromHttpCall.flatMap(_.transact(pgsqlXa)).unsafeRunSync()

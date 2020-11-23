@@ -24,7 +24,7 @@ package tv.teads.hello.doobie
 import org.scalatest.wordspec.AnyWordSpec
 
 import doobie.implicits._
-
+import doobie.implicits.javatime._
 import doobie.postgres.implicits._
 
 import tv.teads.hello.doobie.model.Person

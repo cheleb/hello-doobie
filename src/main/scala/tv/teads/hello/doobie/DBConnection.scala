@@ -33,7 +33,19 @@ trait DBConnection {
 
   val pgsqlXa = Transactor.fromDriverManager[IO]("org.postgresql.Driver", "jdbc:postgresql:world")
 
-  val calciteDruidXa = Transactor.strategy.set(Transactor.fromDriverManager[IO]("org.apache.calcite.jdbc.Driver", "jdbc:calcite:model=src/test/resources/druid-wiki-model.json"), Strategy.default.copy(after = unit, oops = unit))
-  val calciteDruid2Xa = Transactor.strategy.set(Transactor.fromDriverManager[IO]("org.apache.calcite.jdbc.Driver", "jdbc:calcite:model=src/test/resources/druid-wiki-model2.json"), Strategy.default.copy(after = unit, oops = unit))
-  
+  val calciteDruidXa = Transactor.strategy.set(
+    Transactor.fromDriverManager[IO](
+      "org.apache.calcite.jdbc.Driver",
+      "jdbc:calcite:model=src/test/resources/druid-wiki-model.json"
+    ),
+    Strategy.default.copy(after = unit, oops = unit)
+  )
+  val calciteDruid2Xa = Transactor.strategy.set(
+    Transactor.fromDriverManager[IO](
+      "org.apache.calcite.jdbc.Driver",
+      "jdbc:calcite:model=src/test/resources/druid-wiki-model2.json"
+    ),
+    Strategy.default.copy(after = unit, oops = unit)
+  )
+
 }

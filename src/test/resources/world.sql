@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS countrylanguage (
 CREATE TABLE IF NOT EXISTS person (
     id UUID,
     name text NOT NULL,
-    age INTEGER NOT NULL
+    birthdate TIMESTAMP WITH TIME ZONE
 );
 
 INSERT INTO person (id, name, age) VALUES ('9508c83f-0052-48f1-8bec-8ebc4b18c863', 'Agnes', 42);

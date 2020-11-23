@@ -10,8 +10,12 @@ lazy val `hello-doobie` =
     .enablePlugins(AutomateHeaderPlugin)
     .settings(settings)
     .settings(Dependencies.doobie)
+    .settings(Dependencies.logging)
     .settings(
-      libraryDependencies += library.calciteDruid
+      libraryDependencies ++= Seq(
+        library.protobuf,
+        library.calciteDruid
+      )
     )
     .settings(
       libraryDependencies ++= Seq(
@@ -28,11 +32,12 @@ lazy val `hello-doobie` =
 lazy val library =
   new {
     object Version {
-      val scalaCheck = "1.14.3"
-      val scalaTest      = "3.2.0"
+      val scalaCheck = "1.15.1"
+      val scalaTest      = "3.2.3"
       val pgEmbedded = "0.13.3"
     }
-    val calciteDruid =  "org.apache.calcite" % "calcite-druid" % "1.23.0"
+    val calciteDruid =  "org.apache.calcite" % "calcite-druid" % "1.26.0"
+    val protobuf = "com.google.protobuf" % "protobuf-java" % "3.14.0"
     val scalaCheck = "org.scalacheck" %% "scalacheck" % Version.scalaCheck
     val scalaTest      = "org.scalatest"    %% "scalatest"      % Version.scalaTest
     val pgEmbedded = "com.opentable.components" % "otj-pg-embedded" % Version.pgEmbedded,
@@ -53,7 +58,7 @@ lazy val scalafixSettings = Seq(
 
 lazy val commonSettings =
   Seq(
-    scalaVersion := "2.13.3",
+    scalaVersion := "2.13.4",
     organization := "tv.teads",
     organizationName := "Olivier NOUGUIER",
     startYear := Some(2018),

@@ -26,18 +26,21 @@ import org.scalatest.wordspec.AnyWordSpec
 import doobie._
 import doobie.implicits._
 
+import doobie.implicits.javatime._
 import doobie.postgres.implicits._
 
 import tv.teads.hello.doobie.model.Person
 import java.{ util => ju }
 import cats.effect.IO
+import java.time.LocalDate
+import java.time.LocalDateTime
 
 class TransactionSpec extends AnyWordSpec with DBConnection {
 
   "Doobie" should {
 
     def insertPerson(p: Person): ConnectionIO[Int] =
-      sql"INSERT INTO person (id, name, age) VALUES(${p.id}, ${p.name}, ${p.age})".update.run
+      sql"INSERT INTO person (id, name, birthdate) VALUES(${p.id}, ${p.name}, ${p.birthDate})".update.run
 
     "Combine statement" in {
 
@@ -45,7 +48,7 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
         sql"SELECT count(*) FROM person".query[Int].unique
 
       val insertAndCount =
-        insertPerson(Person(ju.UUID.randomUUID(), "Olivier", 48))
+        insertPerson(Person(ju.UUID.randomUUID(), "Olivier", LocalDateTime.now()))
           .flatMap(_ => countPerson)
           .transact(pgsqlXa)
           .unsafeRunSync()
@@ -59,7 +62,7 @@ class TransactionSpec extends AnyWordSpec with DBConnection {
 
       val sendEmailWithConnection = sendEmail.to[ConnectionIO]
 
-      val insertLucas = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", 18))
+      val insertLucas = insertPerson(Person(ju.UUID.randomUUID(), "Lucas", LocalDateTime.now()))
 
       val insertLucasInTx = insertLucas
         .transact(pgsqlXa)
