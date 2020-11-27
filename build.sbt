@@ -69,7 +69,9 @@ lazy val commonSettings =
       "-language:_",
       "-target:jvm-1.8",
       "-encoding", "UTF-8",
-      "-Ywarn-unused"
+      "-Ywarn-unused",
+      "-feature",
+      "-language:higherKinds"
     )
 //    Compile / compile / wartremoverWarnings ++= Warts.unsafe
 )

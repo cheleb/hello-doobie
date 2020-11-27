@@ -19,20 +19,29 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package tv.teads.hello
+package tv.teads.hello.fs2sample
 
-import cats.effect.{ IO, Sync }
-import cats.effect.concurrent.Ref
+import fs2._
+import fs2.concurrent
+import org.scalatest.wordspec.AnyWordSpec
 
-object Test extends App {
+class MergeStreamSpec extends AnyWordSpec {
+  "FS2" should {
 
-  val program = for {
-    ref      <- Ref[IO].of(42)
-    _        <- ref.update(_ + 1)
-    _        <- ref.update(_ + 1)
-    contents <- ref.get
-  } yield println(contents)
+    "merge stream " in {
+      /*
+      import cats.effect.{ ContextShift, IO }
 
-  program.unsafeRunSync()
-
+      implicit val ioContextShift: ContextShift[IO] =
+        IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
+// ioContextShift: ContextShift[IO] = cats.effect.internals.IOContextShift@4d4ac0b
+      concurrent
+        .join(2)(Stream(Stream(1, 2, 3), Stream(2, 3, 4)))
+        .compile
+        .toVector
+        .unsafeRunSync()
+// res41: Vector[Int] = Vector(1, 2, 3, 4
+     */
+    }
+  }
 }

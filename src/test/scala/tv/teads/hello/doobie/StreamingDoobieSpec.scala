@@ -22,25 +22,43 @@
 package tv.teads.hello.doobie
 
 import doobie.implicits._
+import doobie.free.connection.ConnectionIO
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+
+import cats.effect.concurrent.Ref
+
+import cats.effect.IO
 
 class StreamingDoobieSpec extends AnyWordSpec with Matchers with DBConnection {
 
   "Doobie" should {
     "stream result set" in {
 
-      sql"select code, name from country"
-        .query[(String, String)]
-        .stream
-        .map {
-          case ((code, name)) =>
-            println(s"$code: $name")
-        }
-        .compile
-        .drain
-        .transact(pgsqlXa)
-        .unsafeRunSync()
+      def doobie(counter: Ref[IO, Int]) =
+        sql"select code, name from country"
+          .query[(String, String)]
+          .stream
+          .evalTap {
+            case ((_, name)) =>
+              val el = if(name.startsWith("A")) counter.update(_ + 1) else IO.unit
+              el.to[ConnectionIO]
+          }
+          .compile
+          .drain
+          .transact(pgsqlXa)
+
+
+
+      val prog = for {
+        counter <- Ref.of[IO, Int](0)
+        _       <- doobie(counter)
+        count   <- counter.get
+        _       <- IO(println(s" whaou $count matches"))
+
+      } yield ()
+
+      prog.unsafeRunSync()
     }
   }
 }
