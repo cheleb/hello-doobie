@@ -22,26 +22,28 @@
 package tv.teads.hello.fs2sample
 
 import fs2._
-import fs2.concurrent
+import cats.effect.{ ContextShift, IO }
+
 import org.scalatest.wordspec.AnyWordSpec
 
 class MergeStreamSpec extends AnyWordSpec {
   "FS2" should {
 
     "merge stream " in {
-      /*
-      import cats.effect.{ ContextShift, IO }
 
       implicit val ioContextShift: ContextShift[IO] =
         IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
-// ioContextShift: ContextShift[IO] = cats.effect.internals.IOContextShift@4d4ac0b
-      concurrent
-        .join(2)(Stream(Stream(1, 2, 3), Stream(2, 3, 4)))
+
+      Stream(1, 2, 3)
+        .merge(Stream.eval(IO { Thread.sleep(2000); 5 }))
+        .merge(Stream.eval(IO { Thread.sleep(300); 4 }))
+        .map(i => i * 10)
+        .evalTap(i => IO(println(i)))
         .compile
-        .toVector
+        .drain
         .unsafeRunSync()
-// res41: Vector[Int] = Vector(1, 2, 3, 4
-     */
+
+//        println(res)
     }
   }
 }

@@ -30,10 +30,25 @@ import cats.effect.concurrent.Ref
 
 import cats.effect.IO
 
+import cats.arrow.FunctionK
+import cats.effect.LiftIO
+
+import fs2._
+
 class StreamingDoobieSpec extends AnyWordSpec with Matchers with DBConnection {
+
+  val liftToConnIO: FunctionK[IO, ConnectionIO] = LiftIO.liftK[ConnectionIO]
 
   "Doobie" should {
     "stream result set" in {
+
+      val pureStreal: Stream[fs2.Pure, Int] = Stream(1, 2, 3)
+
+      val effectFullStream: Stream[IO, Int] = Stream.eval(IO(1))
+
+      pureStreal.toList
+
+      effectFullStream.compile.drain.unsafeRunSync()
 
       def doobie(counter: Ref[IO, Int]) =
         sql"select code, name from country"
@@ -41,14 +56,13 @@ class StreamingDoobieSpec extends AnyWordSpec with Matchers with DBConnection {
           .stream
           .evalTap {
             case ((_, name)) =>
-              val el = if(name.startsWith("A")) counter.update(_ + 1) else IO.unit
+              val el = if (name.startsWith("A")) counter.update(_ + 1) else IO.unit
+              val o  = liftToConnIO(el)
               el.to[ConnectionIO]
           }
           .compile
           .drain
           .transact(pgsqlXa)
-
-
 
       val prog = for {
         counter <- Ref.of[IO, Int](0)
