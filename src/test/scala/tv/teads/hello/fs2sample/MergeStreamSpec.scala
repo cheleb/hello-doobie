@@ -25,18 +25,20 @@ import fs2._
 import cats.effect.{ ContextShift, IO }
 
 import org.scalatest.wordspec.AnyWordSpec
-
+import scala.concurrent.duration.DurationInt
 class MergeStreamSpec extends AnyWordSpec {
   "FS2" should {
 
     "merge stream " in {
 
+      implicit val timer = IO.timer(scala.concurrent.ExecutionContext.Implicits.global)
+
       implicit val ioContextShift: ContextShift[IO] =
         IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
 
       Stream(1, 2, 3)
-        .merge(Stream.eval(IO { Thread.sleep(2000); 5 }))
-        .merge(Stream.eval(IO { Thread.sleep(300); 4 }))
+        .merge(Stream.eval(IO.sleep(2000.millis) *> IO(5)))
+        .merge(Stream.eval(IO.sleep(300.millis) *> IO(4)))
         .map(i => i * 10)
         .evalTap(i => IO(println(i)))
         .compile

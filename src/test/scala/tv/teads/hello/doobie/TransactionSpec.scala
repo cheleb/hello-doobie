@@ -26,13 +26,12 @@ import org.scalatest.wordspec.AnyWordSpec
 import doobie._
 import doobie.implicits._
 
-import doobie.implicits.javatime._
 import doobie.postgres.implicits._
 
 import tv.teads.hello.doobie.model.Person
 import java.{ util => ju }
 import cats.effect.IO
-import java.time.LocalDate
+
 import java.time.LocalDateTime
 
 class TransactionSpec extends AnyWordSpec with DBConnection {
